@@ -1,0 +1,63 @@
+<html>
+<body>
+    <form onsubmit="saveToLocalStorage(event)">
+        <label>name</label>
+        <input id="name" type="text" name="username" required/>
+        <label>email</label>
+        <input id="email" type="text" name="emailId" required/>
+        <label>phonenumber</label>
+        <input id="phonenumber" type="tel" name="phonenumber" required/>
+        <button >submit</button>
+        </form>
+        <ul id='listOfitems'></ul>
+        <script>
+            function saveToLocalStorage(event){
+                event.preventDefault();
+                const name=event.target.username.value;
+                const email=event.target.emailId.value;
+                const phonenumber=event.target.phonenumber.value;
+                //localStorage.setItem('name', name);
+                //localStorage.setItem('email', email);
+                //localStorage.setItem('phonenumber', phonenumber);
+                const obj={
+                    name,
+                    email,
+                    phonenumber
+                }
+                localStorage.setItem(obj.email,JSON.stringify(obj));
+                showUserOnScreen(obj);
+            }
+
+            window.addEventListener("DOMContentLoaded",()=>{
+                const localStorageObj=localStorage;
+                const localStoragekeys=Object.keys(localStorageObj);
+
+                for (var i=0;i<localStoragekeys.length;i++){
+                    const key=localStoragekeys[i];
+                    const userDetailsString=localStorageObj[key];
+                    const userDetailsObj=JSON.parse(useruserDetailsString);
+                    showNewUserOnScreen(userDetailsObj);
+                }
+            })
+
+            function showNewUserOnScreen(user){
+                
+                if(localStorage.getItem(user.email)!=null){
+                    removeUserFromScreen(user.email)
+                }
+                
+                const parentElem=document.getElementById('listOfitems');
+                const childHTML=`<li id=${user.email}> ${user.name}-${user.email}
+                    <button onclick=deleteUser('${user.email}') > Delete User</button>
+                    <button onclick=editUserDetails('${user.email}','${user.name}'.'${user.phonenumber}') > Edit User</button>
+                        </li>`
+
+                        parentNode.innerHTML=parentNode.innerHTML+childHTML;
+            }
+            function editUserDetails(emailId,name,phonenumber){
+                document.getElementById('emailId')
+            }
+
+        </script>
+</body>
+</html>
